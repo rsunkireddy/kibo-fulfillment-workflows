@@ -24,15 +24,21 @@
   </developers>
 
   <properties>
-    <version.org.kie>7.26.0.Final</version.org.kie>
+    <!-- Align all KIE/jBPM versions -->
+    <version.org.kie>7.73.0.Final</version.org.kie>
     <java.version>8</java.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-    <jackson.version>2.9.7</jackson.version>
+    <jackson.version>2.13.3</jackson.version>
     <kotlin.version>1.5.10</kotlin.version>
+    <spring.version>5.3.20</spring.version>
+    <spring.boot.version>2.7.0</spring.boot.version>
+    
+    <!-- BOM for KIE dependencies -->
+    <version.org.kie.bom>${version.org.kie}</version.org.kie.bom>
     <jacocoOutputDirectory>${project.build.directory}/jacoco-aggregate</jacocoOutputDirectory>
     <sonar.organization>kibo-ucp</sonar.organization>
     <sonar.projectName>Kibo.FulfillmentWorkflows</sonar.projectName>
@@ -53,7 +59,20 @@
     <sonar.login>${env.SONAR_LOGIN}</sonar.login>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-bom</artifactId>
+        <version>${version.org.kie.bom}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <!-- KIE Dependencies -->
     <dependency>
       <groupId>org.kie</groupId>
       <artifactId>kie-api</artifactId>
@@ -65,6 +84,36 @@
       <artifactId>kie-internal</artifactId>
       <version>${version.org.kie}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-core</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-persistence-jpa</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-bpmn2</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-persistence-jpa</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.drools</groupId>
+          <artifactId>drools-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -96,6 +145,51 @@
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <!-- Spring Dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JTA API -->
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>javax.transaction-api</artifactId>
+      <version>1.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>${spring.boot.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test-junit</artifactId>
@@ -111,13 +205,17 @@
         <artifactId>kie-maven-plugin</artifactId>
         <version>${version.org.kie}</version>
         <extensions>true</extensions>
+        <configuration>
+          <outputDirectory>${project.build.directory}/kjar</outputDirectory>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <release>${java.version}</release>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
         <executions>
           <execution>
@@ -126,7 +224,7 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
+      <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
@@ -200,7 +298,36 @@
     </plugins>
   </build>
 
+  <distributionManagement>
+    <repository>
+      <id>business-central-repository</id>
+      <name>Business Central Maven Repository</name>
+      <url>http://YOUR_BC_HOST:8080/business-central/maven2</url>
+    </repository>
+  </distributionManagement>
+
   <profiles>
+    <profile>
+      <id>deploy-to-bc</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-maven-plugin</artifactId>
+            <version>${version.org.kie}</version>
+            <extensions>true</extensions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>skip-tests</id>
+      <properties>
+        <skipTests>true</skipTests>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.test.failure.ignore>true</maven.test.failure.ignore>
+      </properties>
+    </profile>
     <profile>
       <id>nexus-deploy</id>
       <activation>
