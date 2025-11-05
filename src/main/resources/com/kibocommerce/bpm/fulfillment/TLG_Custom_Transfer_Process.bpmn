@@ -819,7 +819,7 @@ kcontext.setVariable("currentState","PRINTED_PACKING_SLIP");
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:scriptTask id="_2ABB6487-3511-489D-89D4-DC42D285A944" name="Pre-Accept Shipment" scriptFormat="http://www.java.com/java">
+    <bpmn2:serviceTask id="_2ABB6487-3511-489D-89D4-DC42D285A944" name="Pre-Accept Shipment" implementation="Other" operationRef="ShipmentPreAcceptance">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
           <drools:metaValue><![CDATA[Pre-Accept Shipment]]></drools:metaValue>
@@ -827,11 +827,24 @@ kcontext.setVariable("currentState","PRINTED_PACKING_SLIP");
       </bpmn2:extensionElements>
       <bpmn2:incoming>_218BDEF8-6015-47C7-8A70-9ACC4E98CF0E</bpmn2:incoming>
       <bpmn2:outgoing>_37BD80F8-F3BC-479B-BE71-EE3A6FB0CD59</bpmn2:outgoing>
-      <bpmn2:script><![CDATA[if (currentState == null || currentState.equals("")) {
-  kcontext.setVariable("currentState","ACCEPTED_SHIPMENT");
-}
-]]></bpmn2:script>
-    </bpmn2:scriptTask>
+      <bpmn2:ioSpecification id="_serviceTaskIoSpec">
+        <bpmn2:dataInput id="_currentStateInput" itemSubjectRef="_currentStateItem" name="currentState"/>
+        <bpmn2:inputSet id="_serviceTaskInputSet">
+          <bpmn2:dataInputRefs>_currentStateInput</bpmn2:dataInputRefs>
+        </bpmn2:inputSet>
+        <bpmn2:outputSet id="_serviceTaskOutputSet">
+          <bpmn2:dataOutputRefs>_currentStateOutput</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_currentStateInputAssociation">
+        <bpmn2:sourceRef>currentState</bpmn2:sourceRef>
+        <bpmn2:targetRef>_currentStateInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation id="_currentStateOutputAssociation">
+        <bpmn2:sourceRef>_currentStateOutput</bpmn2:sourceRef>
+        <bpmn2:targetRef>currentState</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:serviceTask>
     <bpmn2:subProcess id="_49F8C5A5-7B24-44FA-A7A5-DEDD81D4EC94" name="Canceled Event" triggeredByEvent="true">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
