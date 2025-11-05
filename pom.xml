@@ -34,7 +34,7 @@
     <sonar.language>java</sonar.language>
     <sonar.java.source>${java.version}</sonar.java.source>
     <jackson.version>2.9.7</jackson.version>
-    <version.org.kie>7.26.0.Final</version.org.kie>
+    <version.org.kie>7.67.0.Final</version.org.kie>
     <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
     <sonar.exclusions>**/*.xml, **/*Test.*</sonar.exclusions>
     <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -53,9 +53,28 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>org.kie</groupId>
+      <artifactId>kie-api</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.drools</groupId>
+      <artifactId>drools-core</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-bpmn2</artifactId>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-workitems-rest</artifactId>
-      <version>7.74.1.Final</version>
+      <version>${version.org.kie}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.kie</groupId>
@@ -107,6 +126,20 @@
         <artifactId>kie-maven-plugin</artifactId>
         <version>${version.org.kie}</version>
         <extensions>true</extensions>
+        <configuration>
+          <kmodule>${project.basedir}/src/main/resources/META-INF/kmodule.xml</kmodule>
+          <resources>
+            <resource>
+              <directory>${project.basedir}/src/main/resources</directory>
+              <targetPath>META-INF</targetPath>
+              <includes>
+                <include>**/*.bpmn</include>
+                <include>**/*.bpmn2</include>
+                <include>**/*.drl</include>
+              </includes>
+            </resource>
+          </resources>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
