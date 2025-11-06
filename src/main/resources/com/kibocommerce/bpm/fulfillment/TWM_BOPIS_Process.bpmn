@@ -105,7 +105,7 @@
       <bpmn2:outMessageRef>_ShipmentPreAcceptanceResponseMessage</bpmn2:outMessageRef>
     </bpmn2:operation>
   </bpmn2:interface>
-  <bpmn2:process id="TLG_Custom_BOPIS_Process" drools:packageName="com.kibocommerce.bpm.fulfillment" drools:version="1.2324.0" drools:adHoc="false" name="BOPIS Payment Confirm 02" isExecutable="true" processType="Public">
+  <bpmn2:process id="TWM__BOPIS_Process" drools:packageName="com.kibocommerce.bpm.fulfillment" drools:version="1.2324.0" drools:adHoc="false" name="BOPIS Payment Confirm 02" isExecutable="true" processType="Public">
     <bpmn2:documentation id="_HlwvUArPEe6wb-qS0k3PhQ"><![CDATA[BOPIS Payment Confirm 02]]></bpmn2:documentation>
     <bpmn2:extensionElements>
       <drools:metaData name="customDescription">
@@ -1021,7 +1021,7 @@ kcontext.setVariable("currentState","INVENTORY_NOPE");
     </bpmn2:boundaryEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="_HlxWZQrPEe6wb-qS0k3PhQ">
-    <bpmndi:BPMNPlane id="_HlxWZgrPEe6wb-qS0k3PhQ" bpmnElement="TLG_Custom_BOPIS_Process">
+    <bpmndi:BPMNPlane id="_HlxWZgrPEe6wb-qS0k3PhQ" bpmnElement="TWM__BOPIS_Process">
       <bpmndi:BPMNShape id="shape__4386F2C9-548D-4214-87B9-439ECD9098F3" bpmnElement="_4386F2C9-548D-4214-87B9-439ECD9098F3" isExpanded="true">
         <dc:Bounds height="188.0" width="401.33337" x="1472.0" y="404.0"/>
       </bpmndi:BPMNShape>

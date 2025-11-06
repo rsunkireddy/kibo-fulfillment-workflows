@@ -72,17 +72,27 @@
   <bpmn2:itemDefinition id="__473F6DAC-3774-42A1-A4A2-F1BFE2EB3855_NotStartedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__473F6DAC-3774-42A1-A4A2-F1BFE2EB3855_NotCompletedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__473F6DAC-3774-42A1-A4A2-F1BFE2EB3855_stockLevelOutputXItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_orderItem" structureRef="java.lang.Object"/>
+  <bpmn2:itemDefinition id="_currentStateItem" structureRef="java.lang.Object"/>
   <bpmn2:signal id="_4803913d-671c-3bd6-9ac9-cac74ff88803" name="customer_care"/>
   <bpmn2:signal id="_d5c39a1d-9ace-3393-b835-f334a1fb9206" name="canceled"/>
   <bpmn2:signal id="_c7537d6d-48ec-3261-b49c-09a9f284bd45" name="rejected"/>
-  <bpmn2:signal id="_c7537d6d-48ec-3261-b49c-09a9f284bd45" name="rejected"/>
-  <bpmn2:signal id="_c7537d6d-48ec-3261-b49c-09a9f284bd45" name="rejected"/>
   <bpmn2:signal id="_da084524-3149-3123-a57f-55631d22eec8" name="picked"/>
-  <bpmn2:signal id="_469bba0a-5642-35df-8eed-e42db14f17b0" name="back"/>
-  <bpmn2:signal id="_469bba0a-5642-35df-8eed-e42db14f17b0" name="back"/>
   <bpmn2:signal id="_8c45e5e3-5cbc-3441-a970-964edc5752b9" name="fulfilled"/>
-  <bpmn2:signal id="_d0cab90d-8d20-357e-af2b-9be52f7dd25d" name="next"/>
-  <bpmn2:signal id="_469bba0a-5642-35df-8eed-e42db14f17b0" name="back"/>
+  <bpmn2:signal id="_6d8040b0-475e-361c-b6ed-12bb52fa30a8" name="wait_for_transfer"/>
+  <bpmn2:signal id="_c7537d6d-48ec-3261-b49c-09a9f284bd45" name="rejected"/>
+  
+  <!-- Message Definitions -->
+  <bpmn2:message id="_ShipmentPreAcceptanceRequestMessage" itemRef="_orderItem" />
+  <bpmn2:message id="_ShipmentPreAcceptanceResponseMessage" itemRef="_currentStateItem" />
+  
+  <!-- Interface Definitions -->
+  <bpmn2:interface id="_ShipmentInterface" name="ShipmentInterface">
+    <bpmn2:operation id="_ShipmentPreAcceptanceOperation" name="ShipmentPreAcceptance" implementationRef="ShipmentPreAcceptance">
+      <bpmn2:inMessageRef>_ShipmentPreAcceptanceRequestMessage</bpmn2:inMessageRef>
+      <bpmn2:outMessageRef>_ShipmentPreAcceptanceResponseMessage</bpmn2:outMessageRef>
+    </bpmn2:operation>
+  </bpmn2:interface>
   <bpmn2:process id="TLG_Custom_Transfer_Process" drools:packageName="com.kibocommerce.bpm.fulfillment" drools:version="1.2324.0" drools:adHoc="false" name="Transfer Payment Confirm 02" isExecutable="true" processType="Public">
     <bpmn2:documentation id="_eBSEsQrQEe6wb-qS0k3PhQ"><![CDATA[Transfer Payment Confirm 02]]></bpmn2:documentation>
     <bpmn2:extensionElements>
@@ -819,7 +829,7 @@ kcontext.setVariable("currentState","PRINTED_PACKING_SLIP");
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:serviceTask id="_2ABB6487-3511-489D-89D4-DC42D285A944" name="Pre-Accept Shipment" implementation="Other" operationRef="ShipmentPreAcceptance">
+    <bpmn2:serviceTask id="_2ABB6487-3511-489D-89D4-DC42D285A944" name="Pre-Accept Shipment" implementation="Other" operationRef="_ShipmentPreAcceptanceOperation">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
           <drools:metaValue><![CDATA[Pre-Accept Shipment]]></drools:metaValue>
