@@ -41,7 +41,7 @@ public class ShipmentPreAcceptanceService implements WorkItemHandler {
      * @param order The order object
      * @return The determined shipment state
      */
-    private String determineShipmentState(Object order) {
+    public String determineShipmentState(Object order) {
         String state = "ACCEPTED_SHIPMENT";
         
         if (order != null) {

@@ -6,7 +6,6 @@
   <bpmn2:signal id="_d5c39a1d-9ace-3393-b835-f334a1fb9206" name="canceled"/>
   <bpmn2:signal id="_4803913d-671c-3bd6-9ac9-cac74ff88803" name="customer_care"/>
   <bpmn2:signal id="_ec0cd3cb-91fe-32b9-901f-62a528eb07a9" name="execute"/>
-  <bpmn2:signal id="_ec0cd3cb-91fe-32b9-901f-62a528eb07a9" name="execute"/>
   <bpmn2:signal id="_8c45e5e3-5cbc-3441-a970-964edc5752b9" name="fulfilled"/>
   <bpmn2:process id="fulfillment.FulfillmentProcess-Digital" drools:packageName="com.kibocommerce.bpm.fulfillment" drools:version="1.2324.0" drools:adHoc="false" name="Digital Default" isExecutable="true" processType="Public">
     <bpmn2:documentation id="_3JyFEArOEe6wb-qS0k3PhQ"><![CDATA[Digital Default]]></bpmn2:documentation>
@@ -16,7 +15,6 @@
       </drools:metaData>
       <drools:import name="java.util.List"/>
       <drools:import name="java.util.ArrayList"/>
-      <drools:import name="com.kibocommerce.bpm.fulfillment.FulfillmentAction"/>
     </bpmn2:extensionElements>
     <bpmn2:property id="nextSignal" itemSubjectRef="_nextSignalItem" name="nextSignal"/>
     <bpmn2:property id="actions" itemSubjectRef="_actionsItem" name="actions"/>
@@ -83,7 +81,7 @@ kcontext.setVariable("nextSignal", null);]]></bpmn2:script>
       <bpmn2:script><![CDATA[kcontext.setVariable("currentState", "IN_PROGRESS");
 
 List _actions = new ArrayList();
-_actions.add(FulfillmentAction.CapturePayment);
+_actions.add("CapturePayment");
 kcontext.setVariable("actions", _actions);
 
 kcontext.setVariable("nextSignal", "execute");]]></bpmn2:script>
@@ -119,7 +117,7 @@ kcontext.setVariable("nextSignal", "execute");]]></bpmn2:script>
       <bpmn2:script><![CDATA[kcontext.setVariable("currentState", "IN_PROGRESS");
 
 List _actions = new ArrayList();
-_actions.add(FulfillmentAction.FulfillItems);
+_actions.add("FulfillItems");
 kcontext.setVariable("actions", _actions);
 
 kcontext.setVariable("nextSignal", "execute");

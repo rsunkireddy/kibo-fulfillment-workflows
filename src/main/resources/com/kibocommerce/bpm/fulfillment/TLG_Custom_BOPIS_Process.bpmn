@@ -84,8 +84,6 @@
   <bpmn2:itemDefinition id="__FD66B4ED-B56B-4082-927F-6C2649261247_NotCompletedReassignInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__FD66B4ED-B56B-4082-927F-6C2649261247_NotStartedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__FD66B4ED-B56B-4082-927F-6C2649261247_NotCompletedNotifyInputXItem" structureRef="Object"/>
-  <bpmn2:itemDefinition id="_orderItem" structureRef="java.lang.Object"/>
-  <bpmn2:itemDefinition id="_currentStateItem" structureRef="java.lang.Object"/>
   <bpmn2:signal id="_4803913d-671c-3bd6-9ac9-cac74ff88803" name="customer_care"/>
   <bpmn2:signal id="_d5c39a1d-9ace-3393-b835-f334a1fb9206" name="canceled"/>
   <bpmn2:signal id="_8c45e5e3-5cbc-3441-a970-964edc5752b9" name="fulfilled"/>
