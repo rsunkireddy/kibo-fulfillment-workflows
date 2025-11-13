@@ -19,6 +19,7 @@
   <bpmn2:itemDefinition id="__C6B3F43A-382F-4EA2-8939-27B068EBDEB0_ContentInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__C6B3F43A-382F-4EA2-8939-27B068EBDEB0_NotStartedReassignInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__C6B3F43A-382F-4EA2-8939-27B068EBDEB0_NotCompletedReassignInputXItem" structureRef="Object"/>
+  <bpmn2:itemDefinition id="_orderItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__C6B3F43A-382F-4EA2-8939-27B068EBDEB0_NotStartedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__C6B3F43A-382F-4EA2-8939-27B068EBDEB0_NotCompletedNotifyInputXItem" structureRef="Object"/>
   <bpmn2:itemDefinition id="__B8B9C3CA-5BC8-4476-BA22-1D4324FAC12B_SkippableInputXItem" structureRef="Object"/>
@@ -118,9 +119,9 @@
   <bpmn2:signal id="_-6084965141" name="rejected"/>
   <bpmn2:signal id="_-1231737351" name="canceled"/>
   <bpmn2:collaboration id="_41C6FAB8-9DBD-47A3-830B-181EAC417EC4" name="Default Collaboration">
-    <bpmn2:participant id="_62605094-8A22-4A01-B83F-29C7AA0D5799" name="Pool Participant" processRef="TWM_Custom_BOPIS_Process"/>
+    <bpmn2:participant id="_62605094-8A22-4A01-B83F-29C7AA0D5799" name="Pool Participant" processRef="TWM_BOPIS_Custom_Fulfillment_Workflow"/>
   </bpmn2:collaboration>
-  <bpmn2:process id="TWM_Custom_BOPIS_Process" drools:packageName="com.kibocommerce.bpm.fulfillment.hidden" drools:version="1.2324.0" drools:adHoc="false" name="TWM_BOPIS_Custom_Fulfillment_Workflow" isExecutable="true" processType="Public">
+  <bpmn2:process id="TWM_BOPIS_Custom_Fulfillment_Workflow" drools:packageName="com.kibocommerce.bpm.fulfillment.hidden" drools:version="1.2324.0" drools:adHoc="false" name="TWM_BOPIS_Custom_Fulfillment_Workflow" isExecutable="true" processType="Public">
     <bpmn2:documentation><![CDATA[TWM_BOPIS_Custom_Fulfillment_Workflow]]></bpmn2:documentation>
     <bpmn2:extensionElements>
       <drools:metaData name="customDescription">
@@ -136,6 +137,7 @@
     <bpmn2:property id="createTransfer" itemSubjectRef="_createTransferItem" name="createTransfer"/>
     <bpmn2:property id="approved" itemSubjectRef="_approvedItem" name="approved"/>
     <bpmn2:property id="orderReview" itemSubjectRef="_orderReviewItem" name="orderReview"/>
+    <bpmn2:property id="order" itemSubjectRef="_orderItem" name="order"/>
     <bpmn2:sequenceFlow id="_D734E7BC-4F82-497F-B972-5B18CB63D2D4" name="Reviewed" sourceRef="_94C59473-F2B6-424A-BB79-FB3FAD539A06" targetRef="_36D53DD3-7B00-49CF-91F7-23BCDA3915AE_CONVERGE">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
@@ -528,7 +530,7 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>_77ABB17E-064C-4E4C-B5ED-CE7B8E263DB2</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:scriptTask id="_FBC727A2-C67D-497F-9D6D-858D0600D5F7" name="Pre-Accept Shipment" scriptFormat="http://www.java.com/java">
+    <bpmn2:task id="_FBC727A2-C67D-497F-9D6D-858D0600D5F7" name="Pre-Accept Shipment" drools:taskName="ShipmentPreAcceptance">
       <bpmn2:extensionElements>
         <drools:metaData name="elementname">
           <drools:metaValue><![CDATA[Pre-Accept Shipment]]></drools:metaValue>
@@ -537,25 +539,30 @@
       <bpmn2:incoming>_5176CC4E-9039-4BC1-ABAB-30BD61F4530B</bpmn2:incoming>
       <bpmn2:outgoing>_384CFDD8-CF59-4296-8ECF-3E519D62265E</bpmn2:outgoing>
       <bpmn2:ioSpecification>
-        <bpmn2:dataInput id="_FBC727A2-C67D-497F-9D6D-858D0600D5F7_Input" name="script"/>
+        <bpmn2:dataInput id="_FBC727A2_currentStateInput" name="currentState"/>
+        <bpmn2:dataInput id="_FBC727A2_orderInput" name="order"/>
+        <bpmn2:dataOutput id="_FBC727A2_currentStateOutput" name="currentState"/>
         <bpmn2:inputSet>
-          <bpmn2:dataInputRefs>_FBC727A2-C67D-497F-9D6D-858D0600D5F7_Input</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_FBC727A2_currentStateInput</bpmn2:dataInputRefs>
+          <bpmn2:dataInputRefs>_FBC727A2_orderInput</bpmn2:dataInputRefs>
         </bpmn2:inputSet>
-        <bpmn2:outputSet id="_FBC727A2-C67D-497F-9D6D-858D0600D5F7_OutputSet"/>
+        <bpmn2:outputSet id="_FBC727A2_OutputSet">
+          <bpmn2:dataOutputRefs>_FBC727A2_currentStateOutput</bpmn2:dataOutputRefs>
+        </bpmn2:outputSet>
       </bpmn2:ioSpecification>
       <bpmn2:dataInputAssociation>
-        <bpmn2:targetRef>_FBC727A2-C67D-497F-9D6D-858D0600D5F7_Input</bpmn2:targetRef>
-        <bpmn2:assignment>
-          <bpmn2:from xsi:type="bpmn2:tFormalExpression"><![CDATA[// Pre-Accept Shipment script
-kcontext.setVariable("currentState", "PENDING_ACCEPTANCE");]]></bpmn2:from>
-          <bpmn2:to xsi:type="bpmn2:tFormalExpression">_FBC727A2-C67D-497F-9D6D-858D0600D5F7_Input</bpmn2:to>
-        </bpmn2:assignment>
+        <bpmn2:sourceRef>currentState</bpmn2:sourceRef>
+        <bpmn2:targetRef>_FBC727A2_currentStateInput</bpmn2:targetRef>
       </bpmn2:dataInputAssociation>
-      <bpmn2:script>if (currentState == null || currentState.equals("")) {
-  kcontext.setVariable("currentState","PRE_ACCEPT_SHIPMENT");
-}
-</bpmn2:script>
-    </bpmn2:scriptTask>
+      <bpmn2:dataInputAssociation>
+        <bpmn2:sourceRef>order</bpmn2:sourceRef>
+        <bpmn2:targetRef>_FBC727A2_orderInput</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataOutputAssociation>
+        <bpmn2:sourceRef>_FBC727A2_currentStateOutput</bpmn2:sourceRef>
+        <bpmn2:targetRef>currentState</bpmn2:targetRef>
+      </bpmn2:dataOutputAssociation>
+    </bpmn2:task>
     <bpmn2:exclusiveGateway id="_9D88D3BC-9D64-4116-8381-23E78B6A2A74" gatewayDirection="Converging" default="_A8A9622B-3B76-479E-A0BF-317E9A12761A">
       <bpmn2:incoming>_79FC782E-FA47-43A7-A3F9-7F8A98C88907</bpmn2:incoming>
       <bpmn2:incoming>_658ABB7B-7126-4B8D-BEB5-362EC2E4723B</bpmn2:incoming>
@@ -1173,8 +1180,8 @@ kcontext.setVariable("currentState","INVENTORY_NOPE");
       <bpmn2:signalEventDefinition signalRef="_-988477312"/>
     </bpmn2:boundaryEvent>
   </bpmn2:process>
-  <bpmndi:BPMNDiagram id="TWM_Custom_BOPIS_Process_Diagram" name="TWM_BOPIS_Custom_Fulfillment_Workflow">
-    <bpmndi:BPMNPlane bpmnElement="TWM_Custom_BOPIS_Process">
+  <bpmndi:BPMNDiagram id="TWM_BOPIS_Custom_Fulfillment_Workflow_Diagram" name="TWM_BOPIS_Custom_Fulfillment_Workflow">
+    <bpmndi:BPMNPlane bpmnElement="TWM_BOPIS_Custom_Fulfillment_Workflow">
       <bpmndi:BPMNShape id="shape__4386F2C9-548D-4214-87B9-439ECD9098F3" bpmnElement="_4386F2C9-548D-4214-87B9-439ECD9098F3" isExpanded="true">
         <dc:Bounds height="188" width="401.33337000000006" x="1256" y="391"/>
       </bpmndi:BPMNShape>
