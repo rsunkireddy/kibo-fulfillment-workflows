@@ -21,7 +21,7 @@ class ShipmentPreAcceptanceServiceTest : JbpmJUnitBaseTestCase(true, false) {
     
     @Before
     fun init() {
-        createRuntimeManager("com/kibocommerce/bpm/fulfillment/TLG_Custom_BOPIS_Process.bpmn")
+        createRuntimeManager("com/kibocommerce/bpm/fulfillment/TWM_BOPIS_Process.bpmn")
         val runtimeEngine = getRuntimeEngine(null)
         kieSession = runtimeEngine.kieSession
         taskService = runtimeEngine.taskService

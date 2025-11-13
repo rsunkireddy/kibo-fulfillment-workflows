@@ -18,7 +18,9 @@ public enum FulfillmentAction {
     FulfillItems("FulfillItems"),
     ShipTransferShipment("ShipTransferShipment"),
     ReadyForPickup("ReadyForPickup"),
-    CapturePayment("CapturePayment");
+    CapturePayment("CapturePayment"),
+    ShipComplianceHold("ShipComplianceHold"),
+    ForterRejected("ForterRejected");
     
     private final String name;
     
